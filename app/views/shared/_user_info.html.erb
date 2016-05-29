@@ -1,0 +1,42 @@
+<div id="user-info" class="well">
+  <div class="text-center">
+    <%= render 'shared/avatar', user: @user %><br>
+    <h5><%= link_to @user.name, @user %></h5>
+  </div>
+  <h5>
+    <%= fa_icon 'shield' %>
+    <%= pluralize(@user.posts_count, 'post') %>
+  </h5>
+  <% if @user.dob.present? %>
+    <h5>
+      <%= fa_icon @user.sex %>
+      <%= "#{pluralize(age(@user.dob), 'year')} old" %>
+    </h5>
+  <% end %>
+  <% if @user.location.present? %>
+    <h5>
+      <%= fa_icon 'map-marker' %>
+      <%= @user.location %>
+    </h5>
+  <% end %>
+  <br>
+  <div class="text-center">
+    <% unless is_current_user?(@user) %>
+      <%= render 'follows/form', user: @user %>
+      <h6><%= 'Follows you' if current_user.followed_by?(@user) %></h6>
+    <% end %>
+  </div>
+  <% if is_current_user?(@user) %>
+  <div class="text-center">
+  <h5><% ['facebook', 'twitter','instagram','linkedin'].each do |provider| %>
+  <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+    <%= provider.to_s.titleize %> Connected
+  <% else %>
+      <%= link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path('user', provider) %>
+  <% end %>
+<br/>
+<% end %>
+</h5>
+</div>
+ <% end %>
+</div>

@@ -1,0 +1,132 @@
+== 20150701024445 DeviseCreateUsers: migrating ================================
+-- create_table(:users)
+   -> 0.0187s
+-- add_index(:users, :email, {:unique=>true})
+   -> 0.0026s
+-- add_index(:users, :reset_password_token, {:unique=>true})
+   -> 0.0021s
+-- add_index(:users, :confirmation_token, {:unique=>true})
+   -> 0.0024s
+== 20150701024445 DeviseCreateUsers: migrated (0.0263s) =======================
+
+== 20150702015915 CreatePosts: migrating ======================================
+-- create_table(:posts)
+   -> 0.0037s
+== 20150702015915 CreatePosts: migrated (0.0038s) =============================
+
+== 20150702020527 CreateActivities: migrating =================================
+-- create_table(:activities)
+   -> 0.0033s
+-- add_index(:activities, [:trackable_id, :trackable_type])
+   -> 0.0010s
+-- add_index(:activities, [:owner_id, :owner_type])
+   -> 0.0018s
+-- add_index(:activities, [:recipient_id, :recipient_type])
+   -> 0.0024s
+== 20150702020527 CreateActivities: migrated (0.0089s) ========================
+
+== 20150703041854 ActsAsVotableMigration: migrating ===========================
+-- create_table(:votes)
+   -> 0.0032s
+-- add_index(:votes, [:voter_id, :voter_type, :vote_scope])
+   -> 0.0010s
+-- add_index(:votes, [:votable_id, :votable_type, :vote_scope])
+   -> 0.0017s
+== 20150703041854 ActsAsVotableMigration: migrated (0.0065s) ==================
+
+== 20150703053202 AddCachedVotesToPosts: migrating ============================
+-- add_column(:posts, :cached_votes_up, :integer, {:default=>0})
+   -> 0.0029s
+-- add_index(:posts, :cached_votes_up)
+   -> 0.0020s
+== 20150703053202 AddCachedVotesToPosts: migrated (0.0052s) ===================
+
+== 20150703054721 CreateComments: migrating ===================================
+-- create_table(:comments)
+   -> 0.0031s
+-- add_index(:comments, :commentable_type)
+   -> 0.0010s
+-- add_index(:comments, :commentable_id)
+   -> 0.0020s
+-- add_index(:comments, :user_id)
+   -> 0.0023s
+== 20150703054721 CreateComments: migrated (0.0087s) ==========================
+
+== 20150703161656 AddCounterCacheToPosts: migrating ===========================
+-- add_column(:posts, :comments_count, :integer, {:default=>0})
+   -> 0.0027s
+-- add_index(:posts, :comments_count)
+   -> 0.0025s
+== 20150703161656 AddCounterCacheToPosts: migrated (0.0056s) ==================
+
+== 20150703194107 ActsAsFollowerMigration: migrating ==========================
+-- create_table(:follows, {:force=>true})
+   -> 0.0036s
+-- add_index(:follows, ["follower_id", "follower_type"], {:name=>"fk_follows"})
+   -> 0.0010s
+-- add_index(:follows, ["followable_id", "followable_type"], {:name=>"fk_followables"})
+   -> 0.0016s
+== 20150703194107 ActsAsFollowerMigration: migrated (0.0066s) =================
+
+== 20150709034258 CreateEvents: migrating =====================================
+-- create_table(:events)
+   -> 0.0039s
+== 20150709034258 CreateEvents: migrated (0.0040s) ============================
+
+== 20150709050651 AddVotesCommentsCountToEvents: migrating ====================
+-- add_column(:events, :cached_votes_up, :integer, {:default=>0})
+   -> 0.0024s
+-- add_index(:events, :cached_votes_up)
+   -> 0.0022s
+-- add_column(:events, :comments_count, :integer, {:default=>0})
+   -> 0.0009s
+-- add_index(:events, :comments_count)
+   -> 0.0023s
+== 20150709050651 AddVotesCommentsCountToEvents: migrated (0.0082s) ===========
+
+== 20150710004012 AddFieldsToUser: migrating ==================================
+-- add_column(:users, :sex, :string, {:null=>false, :default=>"male"})
+   -> 0.0028s
+-- add_column(:users, :location, :string)
+   -> 0.0011s
+-- add_column(:users, :dob, :date)
+   -> 0.0010s
+-- add_column(:users, :phone_number, :string)
+   -> 0.0010s
+== 20150710004012 AddFieldsToUser: migrated (0.0062s) =========================
+
+== 20150710030803 AddPostsCountToUsers: migrating =============================
+-- add_column(:users, :posts_count, :integer, {:null=>false, :default=>0})
+   -> 0.0028s
+== 20150710030803 AddPostsCountToUsers: migrated (0.0030s) ====================
+
+== 20150710044606 CreateFriendlyIdSlugs: migrating ============================
+-- create_table(:friendly_id_slugs)
+   -> 0.0026s
+-- add_index(:friendly_id_slugs, :sluggable_id)
+   -> 0.0012s
+-- add_index(:friendly_id_slugs, [:slug, :sluggable_type])
+   -> 0.0017s
+-- add_index(:friendly_id_slugs, [:slug, :sluggable_type, :scope], {:unique=>true})
+   -> 0.0044s
+-- add_index(:friendly_id_slugs, :sluggable_type)
+   -> 0.0033s
+== 20150710044606 CreateFriendlyIdSlugs: migrated (0.0139s) ===================
+
+== 20150710044624 AddSlugToUsers: migrating ===================================
+-- add_column(:users, :slug, :string)
+   -> 0.0026s
+-- add_index(:users, :slug, {:unique=>true})
+   -> 0.0048s
+== 20150710044624 AddSlugToUsers: migrated (0.0077s) ==========================
+
+== 20150723052523 AddContentHtmlToPosts: migrating ============================
+-- add_column(:posts, :content_html, :text)
+   -> 0.0025s
+== 20150723052523 AddContentHtmlToPosts: migrated (0.0026s) ===================
+
+== 20150723052743 AddCommentHtmlToComments: migrating =========================
+-- add_column(:comments, :comment_html, :text)
+   -> 0.0024s
+== 20150723052743 AddCommentHtmlToComments: migrated (0.0025s) ================
+

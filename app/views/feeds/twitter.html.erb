@@ -1,0 +1,57 @@
+
+<div class="row" style="margin-top: 16px;width: 1000px;">
+<% if current_user.identities.find_by_provider("twitter") %>
+<h2>Send your tweet</h2>
+<p>
+  <%= form_for :tweet,  method: :post do |f| %>
+    <%= f.text_field :message ,:class => 'form-control input-lg'%>
+    <%= f.submit "Send Tweet" ,:class => 'btn btn-sm btn-success' %>
+  <% end %>
+</p>
+  <h1 class="page-header">Twitter Feeds</h1>
+  <div class="col-md-6 ">
+  
+   
+    <table class="table table-striped">
+      <tr>
+        
+        <th> <h3>My Tweets</h3></th>
+         <!-- <th> My Timeline </th> -->
+      </tr>
+    <% @tweets.each do |tweet| %>
+        <tr>
+          <td><%= link_to tweet.text, "https://www.twitter.com/#{tweet.user.screen_name}" %></td>
+        </tr>
+      <% end %>
+  
+  </table>
+</div>
+  <div class="col-md-6 pull-right">
+  
+   
+    <table class="table table-striped">
+      <tr>
+              <th> <h3> My Timeline </h3></th>
+      </tr>
+    <% @posts.each do |post| %>
+        <tr>
+          <td><%= link_to post.text, "https://www.twitter.com/#{post.user.screen_name}" %></td>
+        </tr>
+      <% end %>
+  
+  </table>
+</div>
+<%else%>
+<div class="row">
+<h2>Connect Account</h2>
+<% ['facebook', 'twitter'].each do |provider| %>
+  <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+    <div class= "btn btn-success"><%= provider.to_s.titleize %> Connected</div>
+  <% else %>
+      <%= link_to "Add #{provider.to_s.titleize} Account", omniauth_authorize_path('user', provider),:class => "btn btn-primary" %>
+  <% end %>
+<br/>
+<% end %>
+</div>
+ <%end%>
+</div> 

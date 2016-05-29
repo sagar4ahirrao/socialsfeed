@@ -1,0 +1,66 @@
+<div class="row">
+  <% if current_user.identities.find_by_provider("facebook") %>
+  <div class="col-lg-15">
+    <div class="thumbnail">
+      <img src="<%= @picture %>" style="float: left;margin: 5px;">
+      <h4><%= @profile["name"] %></h4>
+      
+     </div>
+  </div>
+</div>
+
+<div class="row" style="margin-top: 16px;width: 1000px;">
+  <div class="span5">
+  <h1>Facebook Feeds</h1>
+ 
+    <table class="table table-striped">
+      <tr>
+        
+        <th>Name</th>
+        <th>Message</th>
+        <th>Picture</th>
+        <th>description</th>
+        <th>Caption</th>
+        
+      </tr>
+      <% @feed.each do |f| %>
+        <tr>
+          <td><%= f["name"] %></td>
+          <td><%= f["message"] %></td>
+          <td><img src="<%= f["picture"] %>"></td>
+          <td><%= f["description"] %></td>
+          <td><%= f["caption"] %></td>
+          
+        </tr>
+      <% end %>
+     
+  </table>
+  </div>
+  <div class="span5">
+  <h1>Friends</h1>
+    <table class="table table-striped">
+      <tr>
+        <th>Name</th>
+      </tr>
+      <% @friends.each do |f| %>
+        <tr>
+          <td><a href="http://facebook.com/<%= f["id"] %>"><%= f["name"] %></a></td>
+        </tr>
+      <% end %>
+  </table>
+  </div>
+  <%else%>
+ <div class="row">
+<h2>Connect Account</h2>
+<% ['facebook', 'twitter'].each do |provider| %>
+  <% if current_user.identities.pluck(:provider).include?(provider.to_s) %>
+    <div class= "btn btn-success"><%= provider.to_s.titleize %> Connected</div>
+  <% else %>
+      <%= link_to "Add #{provider.to_s.titleize} Account", omniauth_authorize_path('user', provider),:class => "btn btn-primary" %>
+  <% end %>
+<br/>
+<% end %>
+</div>
+
+ <%end%> 
+</div>
